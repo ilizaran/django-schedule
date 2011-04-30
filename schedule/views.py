@@ -347,13 +347,18 @@ class JSONError(HttpResponse):
         HttpResponse.__init__(self, s)
         # TODO strip html tags from form errors
 
-
-def calendar_by_periods_json(request, calendar_slug, periods):
+def calendar_by_periods_json(request, 
+                             calendar_slug, 
+                             periods, 
+                             nb_periods=1,
+                             get_events_func=GET_EVENTS_FUNC,
+                             coerce_date_func=coerce_date_dict,
+                             serialize_occurrences_func=serialize_occurrences):
     # XXX is this function name good?
     # it conforms with the standard API structure but in this case it is rather cryptic
     user = request.user
     calendar = get_object_or_404(Calendar, slug=calendar_slug)
-    date = coerce_date_dict(request.GET)
+    date = coerce_date_func(request.GET)
     if date:
         try:
             date = datetime.datetime(**date)
@@ -361,13 +366,18 @@ def calendar_by_periods_json(request, calendar_slug, periods):
             raise Http404
     else:
         date = datetime.datetime.now()
-    event_list = GET_EVENTS_FUNC(request, calendar)
+
+    event_list = get_events_func(request, calendar)
     period_object = periods[0](event_list, date)
+
     occurrences = []
-    for o in period_object.occurrences:
-        if period_object.classify_occurrence(o):
-            occurrences.append(o)
-    resp = serialize_occurrences(occurrences, user)
+    for idx in range(nb_periods):
+        for o in period_object.occurrences:
+            if period_object.classify_occurrence(o):
+                occurrences.append(o)
+        period_object = period_object.next()
+        
+    resp = serialize_occurrences_func(occurrences, user)
     return HttpResponse(resp)
 
 
