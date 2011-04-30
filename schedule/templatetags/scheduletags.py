@@ -170,7 +170,7 @@ def querystring_for_date(date, num=6):
     query_string = '?'
     qs_parts = ['year=%d', 'month=%d', 'day=%d', 'hour=%d', 'minute=%d', 'second=%d']
     qs_vars = (date.year, date.month, date.day, date.hour, date.minute, date.second)
-    query_string += '&'.join(qs_parts[:num]) % qs_vars[:num]
+    query_string += '&amp;'.join(qs_parts[:num]) % qs_vars[:num]
     return query_string
 
 @register.simple_tag
@@ -205,6 +205,12 @@ def detail( occurrence ):
         'MEDIA_URL': settings.MEDIA_URL,
     }
     return context
+
+
+def _period_duration(period):
+    "Return the number of seconds of specified period"
+    duration = period.end - period.start
+    return (duration.days * 24 * 60 * 60) + duration.seconds
 
 def _cook_occurrences(period, occs, width, height):
     """ Prepare occurrences to be displayed.
@@ -253,8 +259,10 @@ def _cook_occurrences(period, occs, width, height):
         w = int(width / (o.max))
         o.width = w - 2
         o.left = w * o.level
-        o.top = int(height * (float((o.real_start - period.start).seconds) / (period.end - period.start).seconds))
-        o.height = int(height * (float((o.real_end - o.real_start).seconds) / (period.end - period.start).seconds))
+
+        duration_seconds = _period_duration(period)
+        o.top = int(height * (float((o.real_start - period.start).seconds) / duration_seconds))
+        o.height = int(height * (float((o.real_end - o.real_start).seconds) / duration_seconds))
         o.height = min(o.height, height - o.top) # trim what extends beyond the area
     return occs
 
@@ -270,7 +278,7 @@ def _cook_slots(period, increment, width, height):
         height - height of the table (px)
     """
     tdiff = datetime.timedelta(minutes=increment)
-    num = (period.end - period.start).seconds/tdiff.seconds
+    num = _period_duration(period)/tdiff.seconds
     s = period.start
     slots = []
     for i in range(num):

@@ -119,7 +119,9 @@ class Period(object):
 
     def get_time_slot(self, start, end ):
         if start >= self.start and end <= self.end:
-            return Period( self.events, start, end )
+            return Period( self.events, start, end,
+                parent_persisted_occurrences=self.get_persisted_occurrences(),
+                occurrence_pool=self.occurrences)
         return None
 
     def create_sub_period(self, cls, start=None):
