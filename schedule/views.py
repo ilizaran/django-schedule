@@ -221,8 +221,8 @@ def get_occurrence(event_id, occurrence_id=None, year=None, month=None,
 
 
 @check_event_permissions
-def create_or_edit_event(request, calendar_slug, event_id=None, next=None,
-    template_name='schedule/create_event.html', form_class = EventForm, extra_context=None):
+def create_or_edit_event(request, calendar_slug=None, event_id=None, next=None,
+    template_name='schedule/create_event.html', form_class=EventForm, extra_context=None):
     """
     This function, if it receives a GET request or if given an invalid form in a
     POST request it will generate the following response
@@ -273,16 +273,18 @@ def create_or_edit_event(request, calendar_slug, event_id=None, next=None,
     if event_id is not None:
         instance = get_object_or_404(Event, id=event_id)
 
-    calendar = get_object_or_404(Calendar, slug=calendar_slug)
+    if calendar_slug:
+        calendar = get_object_or_404(Calendar, slug=calendar_slug)
 
-    form = form_class(data=request.POST or None, instance=instance,
-        hour24=True, initial=initial_data)
+    form = form_class(data=request.POST or None, instance=instance, hour24=True, initial=initial_data)
 
     if form.is_valid():
         event = form.save(commit=False)
         if instance is None:
             event.creator = request.user
-            event.calendar = calendar
+            if calendar_slug:
+                event.calendar = calendar
+            #else the calendar was specified in the form
         event.save()
         next = next or reverse('event', args=[event.id])
         next = get_next_url(request, next)
@@ -291,9 +293,10 @@ def create_or_edit_event(request, calendar_slug, event_id=None, next=None,
     next = get_next_url(request, next)
     context = {
         "form": form,
-        "calendar": calendar,
         "next":next
     }
+    if calendar_slug:
+        context["calendar"] = calendar
     context.update(extra_context)
     return render_to_response(template_name, context, context_instance=RequestContext(request))
 
