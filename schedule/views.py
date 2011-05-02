@@ -92,7 +92,7 @@ def calendar_by_periods(request, calendar_slug, periods=None,
             'here':quote(request.get_full_path()),
         }
     context.update(extra_context)
-    return render_to_response(template_name, context,context_instance=RequestContext(request),)
+    return render_to_response(template_name, context, context_instance=RequestContext(request),)
 
 def event(request, event_id, template_name="schedule/event.html", extra_context=None):
     """
@@ -142,7 +142,7 @@ def occurrence(request, event_id,
     extra_context = kwargs.get('extra_context', None) or {}
     event, occurrence = get_occurrence(event_id, *args, **kwargs)
     back_url = request.META.get('HTTP_REFERER', None)
-    context =  {
+    context = {
         'event': event,
         'occurrence': occurrence,
         'back_url': back_url,
@@ -184,7 +184,7 @@ def cancel_occurrence(request, event_id,
     """
     extra_context = kwargs.get('extra_context', None) or {}
     event, occurrence = get_occurrence(event_id, *args, **kwargs)
-    next = kwargs.get('next',None) or get_next_url(request, event.get_absolute_url())
+    next = kwargs.get('next', None) or get_next_url(request, event.get_absolute_url())
     if request.method != "POST":
         context = {
             "occurrence": occurrence,
@@ -317,12 +317,12 @@ def delete_event(request, event_id, next=None, login_required=True, extra_contex
     next = get_next_url(request, next)
     extra_context['next'] = next
     return delete_object(request,
-                         model = Event,
-                         object_id = event_id,
-                         post_delete_redirect = next,
-                         template_name = "schedule/delete_event.html",
-                         extra_context = extra_context,
-                         login_required = login_required
+                         model=Event,
+                         object_id=event_id,
+                         post_delete_redirect=next,
+                         template_name="schedule/delete_event.html",
+                         extra_context=extra_context,
+                         login_required=login_required
                         )
 
 def check_next_url(next):
@@ -350,9 +350,9 @@ class JSONError(HttpResponse):
         HttpResponse.__init__(self, s)
         # TODO strip html tags from form errors
 
-def calendar_by_periods_json(request, 
-                             calendar_slug, 
-                             periods, 
+def calendar_by_periods_json(request,
+                             calendar_slug,
+                             periods,
                              nb_periods=1,
                              get_events_func=GET_EVENTS_FUNC,
                              coerce_date_func=coerce_date_dict,
@@ -379,7 +379,7 @@ def calendar_by_periods_json(request,
             if period_object.classify_occurrence(o):
                 occurrences.append(o)
         period_object = period_object.next()
-        
+
     resp = serialize_occurrences_func(occurrences, user)
     return HttpResponse(resp)
 
@@ -409,7 +409,6 @@ def ajax_edit_occurrence_by_code(request):
 
 #TODO permission control
 def ajax_edit_event(request, calendar_slug):
-    print request.POST
     try:
         id = request.REQUEST.get('id') # we got occurrence's encoded id or event id
         if id:
