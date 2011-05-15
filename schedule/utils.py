@@ -26,7 +26,7 @@ class EventListManager(object):
         if after is None:
             after = datetime.datetime.now()
         occ_replacer = OccurrenceReplacer(
-            Occurrence.objects.filter(event__in = self.events))
+            Occurrence.objects.filter(event__in=self.events))
         generators = [event._occurrences_after_generator(after) for event in self.events]
         occurrences = []
 
@@ -39,7 +39,7 @@ class EventListManager(object):
         while True:
             if len(occurrences) == 0: raise StopIteration
 
-            generator=occurrences[0][1]
+            generator = occurrences[0][1]
 
             try:
                 next = heapq.heapreplace(occurrences, (generator.next(), generator))[0]
@@ -76,7 +76,7 @@ class OccurrenceReplacer(object):
         """
         Return persisted occurrences which are now in the period
         """
-        return [occ for key,occ in self.lookup.items() if (occ.start < end and occ.end >= start and not occ.cancelled)]
+        return [occ for key, occ in self.lookup.items() if (occ.start < end and occ.end >= start and not occ.cancelled)]
 
 
 class check_event_permissions(object):
