@@ -16,7 +16,7 @@ from schedule.conf.settings import GET_EVENTS_FUNC, OCCURRENCE_CANCEL_REDIRECT
 from schedule.forms import EventForm, OccurrenceForm
 from schedule.forms import EventBackendForm, OccurrenceBackendForm
 from schedule.models import *
-from schedule.periods import weekday_names
+from schedule.periods import weekday_names, Period
 from schedule.utils import check_event_permissions, coerce_date_dict
 from schedule.utils import decode_occurrence, serialize_occurrences
 
@@ -74,14 +74,7 @@ def calendar_by_periods(request, calendar_slug, periods=None,
     """
     extra_context = extra_context or {}
     calendar = get_object_or_404(Calendar, slug=calendar_slug)
-    date = coerce_date_dict(request.GET)
-    if date:
-        try:
-            date = datetime.datetime(**date)
-        except ValueError:
-            raise Http404
-    else:
-        date = datetime.datetime.now()
+    date, end = coerce_date_dict(request.GET)
     event_list = GET_EVENTS_FUNC(request, calendar)
     period_objects = dict([(period.__name__.lower(), period(event_list, date)) for period in periods])
     context = {
@@ -255,19 +248,12 @@ def create_or_edit_event(request, calendar_slug=None, event_id=None, next=None,
     # Lastly redirect to the event detail of the recently create event
     """
     extra_context = extra_context or {}
-    date = coerce_date_dict(request.GET)
-    initial_data = None
-    if date:
-        try:
-            start = datetime.datetime(**date)
-            initial_data = {
-                "start": start,
-                "end": start + datetime.timedelta(minutes=30)
-            }
-        except TypeError:
-            raise Http404
-        except ValueError:
-            raise Http404
+    start, end = coerce_date_dict(request.GET)
+    initial_data = {"start": start}
+    if end :
+        initial_data["end"] = end
+    else :
+        initial_data["end"] = start + datetime.timedelta(minutes=30)
 
     instance = None
     if event_id is not None:
@@ -361,24 +347,22 @@ def calendar_by_periods_json(request,
     # it conforms with the standard API structure but in this case it is rather cryptic
     user = request.user
     calendar = get_object_or_404(Calendar, slug=calendar_slug)
-    date = coerce_date_func(request.GET)
-    if date:
-        try:
-            date = datetime.datetime(**date)
-        except ValueError:
-            raise Http404
-    else:
-        date = datetime.datetime.now()
+    start, end = coerce_date_func(request.GET)
+    print start, end
 
     event_list = get_events_func(request, calendar)
-    period_object = periods[0](event_list, date)
+    if not end :
+        period_object = periods[0](event_list, start)
+    else:
+        period_object = Period(event_list, start, end)
 
     occurrences = []
     for idx in range(nb_periods):
         for o in period_object.occurrences:
             if period_object.classify_occurrence(o):
                 occurrences.append(o)
-        period_object = period_object.next()
+        if hasattr(period_object, "next"):
+            period_object = period_object.next()
 
     resp = serialize_occurrences_func(occurrences, user)
     return HttpResponse(resp)

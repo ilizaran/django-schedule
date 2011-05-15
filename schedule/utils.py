@@ -121,7 +121,17 @@ def coerce_date_dict(date_dict):
             modified = True
         except KeyError:
             break
-    return modified and retVal or {}
+    date = modified and retVal or {}
+    
+    if date:
+        try:
+            date = datetime.datetime(**date)
+        except ValueError:
+            raise Http404
+    else:
+        date = datetime.datetime.now()
+    
+    return (date, None)
 
 
 occtimeformat = 'ST%Y%m%d%H%M%S'
