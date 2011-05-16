@@ -214,8 +214,14 @@ def get_occurrence(event_id, occurrence_id=None, year=None, month=None,
 
 
 @check_event_permissions
-def create_or_edit_event(request, calendar_slug=None, event_id=None, next=None,
-    template_name='schedule/create_event.html', form_class=EventForm, extra_context=None):
+def create_or_edit_event(request,
+                         calendar_slug=None,
+                         event_id=None,
+                         next=None,
+                         template_name='schedule/create_event.html',
+                         form_class=EventForm,
+                         coerce_date_func=coerce_date_dict,
+                         extra_context=None):
     """
     This function, if it receives a GET request or if given an invalid form in a
     POST request it will generate the following response
@@ -248,7 +254,7 @@ def create_or_edit_event(request, calendar_slug=None, event_id=None, next=None,
     # Lastly redirect to the event detail of the recently create event
     """
     extra_context = extra_context or {}
-    start, end = coerce_date_dict(request.GET)
+    start, end = coerce_date_func(request.GET)
     initial_data = {"start": start}
     if end :
         initial_data["end"] = end
