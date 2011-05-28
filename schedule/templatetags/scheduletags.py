@@ -3,6 +3,7 @@ from django.conf import settings
 from django import template
 from django.core.urlresolvers import reverse
 from django.utils.dateformat import format
+from django.conf import settings
 from schedule.conf.settings import CHECK_PERMISSION_FUNC
 from schedule.models import Calendar, Rule
 from schedule.periods import weekday_names, weekday_abbrs,  Month
@@ -190,6 +191,7 @@ def prevnext( target, slug, period, fmt=None):
     if fmt is None:
         fmt = settings.DATE_FORMAT
     context = {
+        'MEDIA_URL': getattr(settings, 'MEDIA_URL', ''),
         'slug' : slug,
         'period' : period,
         'period_name': format(period.start, fmt),

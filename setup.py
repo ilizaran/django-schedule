@@ -1,7 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import sys
 from setuptools import setup, find_packages
- 
+
+dateutil = 'python-dateutil'
+if sys.version_info < (3, 0):
+    dateutil = 'python-dateutil==1.5'
+
 setup(
     name='django-schedule',
     version='0.5b',
@@ -29,7 +34,7 @@ setup(
                  'Operating System :: OS Independent',
                  'Programming Language :: Python',
                  'Topic :: Utilities'],
-    install_requires=['setuptools', 'vobject', 'python-dateutil'],
+    install_requires=['setuptools', 'vobject', dateutil],
     license='BSD',
     test_suite = "schedule.tests",
 )

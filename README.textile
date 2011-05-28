@@ -20,6 +20,7 @@ REQUIREMENTS:
 
  * python-vobject
  * python-dateutil from Labix
+ * django-autoslug from http://bitbucket.org/neithere/django-autoslug/
 
 (both come with most distributions)
 

@@ -1,5 +1,4 @@
-{% block extra_head %}
-{{block.super}}
+{{ block.super }}
 <script>
 function openCancelDialog(node, cancel_url, delete_url, event){
   event.stopPropagation();
@@ -29,8 +28,6 @@ function openURL(url, event){
     window.location=url;
 }
 </script>
-{% endblock %}
-
 
 <div style="display:none;" id="delete_dialog" title="Question">
   Do you want to cancel this occurrence or delete all occurrences of this event?
