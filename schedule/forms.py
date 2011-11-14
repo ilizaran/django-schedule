@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from schedule.models import Event, Occurrence
+from schedule.models import Event, Occurrence, Rule
 import datetime
 import time
 
@@ -64,15 +64,9 @@ class RuleForm(forms.ModelForm):
     def clean_params(self):
         params = self.cleaned_data["params"]
         try:
-            params = params.split(';')
-            for param in params:
-                param = param.split(':')
-                if len(param) == 2:
-                    param = (str(param[0]), [int(p) for p in param[1].split(',')])
-                    if len(param[1]) == 1:
-                        param = (param[0], param[1][0])
-        except ValueError:
-            raise forms.ValidationError(_("Params format looks invalide"))
+            Rule(params=params).get_params()
+        except (ValueError, SyntaxError):
+            raise forms.ValidationError(_("Params format looks invalid"))
         return self.cleaned_data["params"]
 
 
