@@ -367,7 +367,7 @@ def calendar_by_periods_json(request,
         if hasattr(period_object, "next"):
             period_object = period_object.next()
 
-    resp = serialize_occurrences_func(occurrences, user)
+    resp = serialize_occurrences_func(request, occurrences, user)
     return HttpResponse(resp)
 
 
@@ -380,13 +380,13 @@ def ajax_edit_occurrence_by_code(request):
         event, occurrence = get_occurrence(event_id, **kwargs)
         if request.REQUEST.get('action') == 'cancel':
             occurrence.cancel()
-            return HttpResponse(serialize_occurrences([occurrence], request.user))
+            return HttpResponse(serialize_occurrences(request, [occurrence], request.user))
         form = OccurrenceBackendForm(data=request.POST or None, instance=occurrence)
         if form.is_valid():
             occurrence = form.save(commit=False)
             occurrence.event = event
             occurrence.save()
-            return HttpResponse(serialize_occurrences([occurrence], request.user))
+            return HttpResponse(serialize_occurrences(request, [occurrence], request.user))
         return JSONError(form.errors)
     except Exception, e:
         import traceback
@@ -410,12 +410,12 @@ def ajax_edit_event(request, calendar_slug):
                 # cancellation of a non-recurring event means deleting the event
                 event.delete()
                 # there is nothing more - we return empty json
-                return HttpResponse(serialize_occurrences([], request.user))
+                return HttpResponse(serialize_occurrences(request, [], request.user))
             else:
                 form = EventBackendForm(data=request.POST, instance=event)
                 if form.is_valid():
                     event = form.save()
-                    return HttpResponse(serialize_occurrences(event.get_occurrences(event.start, event.end), request.user))
+                    return HttpResponse(serialize_occurrences(request, event.get_occurrences(event.start, event.end), request.user))
                 return JSONError(form.errors)
         else:
             calendar = get_object_or_404(Calendar, slug=calendar_slug)
@@ -426,7 +426,7 @@ def ajax_edit_event(request, calendar_slug):
                 event.creator = request.user
                 event.calendar = calendar
                 event.save()
-                return HttpResponse(serialize_occurrences(event.get_occurrences(event.start, event.end), request.user))
+                return HttpResponse(serialize_occurrences(request, event.get_occurrences(event.start, event.end), request.user))
             return JSONError(form.errors)
     except Exception, e:
         import traceback

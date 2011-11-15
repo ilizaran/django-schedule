@@ -175,7 +175,7 @@ def decode_occurrence(id):
         return
 
 
-def serialize_occurrences(occurrences, user):
+def serialize_occurrences(request, occurrences, user):
     occ_list = []
     for occ in occurrences:
         original_id = occ.id
