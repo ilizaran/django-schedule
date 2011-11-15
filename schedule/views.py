@@ -1,24 +1,21 @@
-from schedule.utils import serialize_occurrences
-from urllib import quote
-from django.shortcuts import render_to_response, get_object_or_404
-from django.views.generic.create_update import delete_object
-from django.http import HttpResponseRedirect, Http404, HttpResponse
-from django.template import RequestContext
-from django.template import Context, loader
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core import serializers
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
-from django.views.generic.create_update import delete_object
-import datetime
-
+from django.http import HttpResponseRedirect, Http404, HttpResponse
+from django.shortcuts import render_to_response, get_object_or_404
+from django.template import Context, loader, RequestContext
+from django.views.generic.create_update import delete_object, delete_object
 from schedule.conf.settings import GET_EVENTS_FUNC, OCCURRENCE_CANCEL_REDIRECT
-from schedule.forms import EventForm, OccurrenceForm
-from schedule.forms import EventBackendForm, OccurrenceBackendForm
+from schedule.forms import EventBackendForm, OccurrenceBackendForm, EventForm, \
+    OccurrenceForm
 from schedule.models import *
 from schedule.periods import weekday_names, Period
-from schedule.utils import check_event_permissions, coerce_date_dict
-from schedule.utils import decode_occurrence, serialize_occurrences
+from schedule.utils import check_event_permissions, coerce_date_dict, \
+    decode_occurrence, serialize_occurrences
+from urllib import quote
+import datetime
+
 
 def calendar(request, calendar_slug, template='schedule/calendar.html', extra_context=None):
     """
