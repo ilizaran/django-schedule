@@ -251,17 +251,18 @@ def create_or_edit_event(request,
     # Lastly redirect to the event detail of the recently create event
     """
     extra_context = extra_context or {}
-    start, end = coerce_date_func(request.GET)
-    initial_data = {"start": start}
-    if end :
-        initial_data["end"] = end
-    else :
-        initial_data["end"] = start + datetime.timedelta(minutes=30)
-
     instance = None
+    initial_data = None
     if event_id is not None:
         instance = get_object_or_404(Event, id=event_id)
-
+    else:
+        start, end = coerce_date_func(request.GET)
+        initial_data = {"start": start}
+        if end :
+            initial_data["end"] = end
+        else :
+            initial_data["end"] = start + datetime.timedelta(minutes=30)
+    
     if calendar_slug:
         calendar = get_object_or_404(Calendar, slug=calendar_slug)
 
