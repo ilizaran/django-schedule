@@ -352,7 +352,6 @@ def calendar_by_periods_json(request,
     user = request.user
     calendar = get_object_or_404(Calendar, slug=calendar_slug)
     start, end = coerce_date_func(request.GET)
-    print start, end
 
     event_list = get_events_func(request, calendar)
     if not end :
