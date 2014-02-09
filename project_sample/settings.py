@@ -13,6 +13,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASES = {
+<<<<<<< HEAD
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'kk',                      # Or path to database file if using sqlite3.
@@ -23,16 +24,35 @@ DATABASES = {
     }
 }
 
+=======
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+            'NAME': os.path.join(PROJECT_DIR, 'project_sample.db'),                      # Or path to database file if using sqlite3.
+            'USER': '',                      # Not used with sqlite3.
+            'PASSWORD': '',                  # Not used with sqlite3.
+            'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+            'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+            }
+        }
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
+<<<<<<< HEAD
 TIME_ZONE = 'Europe/Madrid'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'es-es'
+=======
+TIME_ZONE = 'America/Chicago'
+
+# Language code for this installation. All choices can be found here:
+# http://www.i18nguy.com/unicode/language-identifiers.html
+LANGUAGE_CODE = 'en-us'
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
 
 SITE_ID = 1
 
@@ -74,10 +94,18 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'project_sample.urls'
 
 TEMPLATE_DIRS = (
+<<<<<<< HEAD
     # uncomment this to use ajax week view
     os.path.join(PROJECT_DIR,"schedule_weekcal/templates"),
     os.path.join(PROJECT_DIR,"templates"),
 )
+=======
+        # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+        # Always use forward slashes, even on Windows.
+        # Don't forget to use absolute paths, not relative paths.
+        os.path.join(PROJECT_DIR,"templates"),
+        )
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
 
 INSTALLED_APPS = (
         'django.contrib.auth',
@@ -87,6 +115,7 @@ INSTALLED_APPS = (
         'django.contrib.admin',
         'django.contrib.admindocs',
         'schedule',
+<<<<<<< HEAD
         #'debug_toolbar',
         )
 
@@ -100,10 +129,23 @@ TEMPLATE_CONTEXT_PROCESSORS = (
      "django.core.context_processors.tz",
      "django.contrib.messages.context_processors.messages",
 )
+=======
+        'debug_toolbar',
+        )
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+        'django.contrib.auth.context_processors.auth',
+        "django.core.context_processors.debug",
+        "django.core.context_processors.i18n",
+        "django.core.context_processors.media",
+        "django.core.context_processors.request",
+        )
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
 
 FIRST_DAY_OF_WEEK = 1 # Monday
 
 # Needed for debug toolbar
+<<<<<<< HEAD
 #INTERNAL_IPS = ('127.0.0.1',) 
 #DEBUG_TOOLBAR_PANELS = (
 #    'debug_toolbar.panels.version.VersionDebugPanel',
@@ -142,3 +184,19 @@ LOGGING = {
         },
     }
 }
+=======
+INTERNAL_IPS = ('127.0.0.1',) 
+DEBUG_TOOLBAR_PANELS = (
+    'debug_toolbar.panels.version.VersionDebugPanel',
+    'debug_toolbar.panels.timer.TimerDebugPanel',
+    'debug_toolbar.panels.settings_vars.SettingsVarsDebugPanel',
+    'debug_toolbar.panels.headers.HeaderDebugPanel',
+    'debug_toolbar.panels.request_vars.RequestVarsDebugPanel',
+    'debug_toolbar.panels.template.TemplateDebugPanel',
+    'debug_toolbar.panels.sql.SQLDebugPanel',
+    'debug_toolbar.panels.signals.SignalDebugPanel',
+    'debug_toolbar.panels.logger.LoggingPanel',
+)
+
+DEBUG_TOOLBAR_CONFIG = {'INTERCEPT_REDIRECTS': False}
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3

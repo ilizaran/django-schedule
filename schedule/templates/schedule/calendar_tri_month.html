@@ -5,7 +5,11 @@
   <div class="calendarname">{{ calendar.name }}</div>
   {% prevnext "tri_month_calendar" calendar.slug periods.month "F Y"%}
   <div class="now">
+<<<<<<< HEAD
     <a href="{% url "tri_month_calendar" calendar.slug %}">
+=======
+    <a href="{% url tri_month_calendar calendar.slug %}">
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
       This month
     </a>
   </div>
@@ -20,10 +24,17 @@
 </table>
 </div>
 <div class="navigation">
+<<<<<<< HEAD
   <a href="{% url "month_calendar" calendar.slug %}{% querystring_for_date periods.month.start 2 %}">
     Monthly Calendar
   </a>
   <a href="{% url "year_calendar" calendar.slug %}{% querystring_for_date periods.month.start 1 %}">
+=======
+  <a href="{% url month_calendar calendar.slug %}{% querystring_for_date periods.month.start 2 %}">
+    Monthly Calendar
+  </a>
+  <a href="{% url year_calendar calendar.slug %}{% querystring_for_date periods.month.start 1 %}">
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
     Full Year Calendar
   </a>
 </div>

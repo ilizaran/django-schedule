@@ -8,7 +8,11 @@
     <td class="{{size}} daynumber free">
 {% endif %}
     <div class="header">
+<<<<<<< HEAD
         <a href="{% url "day_calendar" calendar.slug %}{% querystring_for_date day.start 3 %}">
+=======
+        <a href="{% url day_calendar calendar.slug %}{% querystring_for_date day.start 3 %}">
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
             <b>{{day.start.day}}</b>
         </a>
     </div>

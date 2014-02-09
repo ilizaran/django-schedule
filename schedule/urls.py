@@ -1,5 +1,9 @@
 from django.conf.urls.defaults import *
+<<<<<<< HEAD
 from django.views.generic import ListView
+=======
+from django.views.generic.list_detail import object_list
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
 from schedule.models import Calendar
 from schedule.feeds import UpcomingEventsFeed
 from schedule.feeds import CalendarICalendar
@@ -12,9 +16,14 @@ info_dict = {
 urlpatterns = patterns('',
 
 # urls for Calendars
+<<<<<<< HEAD
  
 url(r'^calendar/$',
     ListView.as_view(queryset=Calendar.objects.all()),
+=======
+url(r'^calendar/$',
+    object_list,
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
     name="schedule",
     kwargs={'queryset':Calendar.objects.all(), 'template_name':'schedule/calendar_list.html'}),
 
@@ -88,15 +97,24 @@ url(r'^occurrence/cancel/(?P<event_id>\d+)/(?P<year>\d+)/(?P<month>\d+)/(?P<day>
 url(r'^occurrence/edit/(?P<event_id>\d+)/(?P<year>\d+)/(?P<month>\d+)/(?P<day>\d+)/(?P<hour>\d+)/(?P<minute>\d+)/(?P<second>\d+)/$',
     'schedule.views.edit_occurrence', 
     name="edit_occurrence_by_date"),
+<<<<<<< HEAD
 
 
 #feed urls 
 url(r'^feed/calendar/(.*)/$',
     'django.contrib.syndication.views.Feed', 
+=======
+    
+
+#feed urls 
+url(r'^feed/calendar/(.*)/$',
+    'django.contrib.syndication.views.feed', 
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
     { "feed_dict": { "upcoming": UpcomingEventsFeed } }),
  
 (r'^ical/calendar/(.*)/$', CalendarICalendar()),
 
+<<<<<<< HEAD
 # AJAX API
 
 #url for occurrences by encoded data
@@ -119,4 +137,7 @@ url(r'^event_json/$',
 
   
 url(r'$', ListView.as_view(queryset=Calendar.objects.all()), name='schedule'),
+=======
+ url(r'^$', object_list, info_dict, name='schedule'), 
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
 )

@@ -3,7 +3,10 @@ import heapq
 from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponseRedirect
 from django.conf import settings
+<<<<<<< HEAD
 from django.template import Context, loader
+=======
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
 from schedule.conf.settings import CHECK_PERMISSION_FUNC
 
 class EventListManager(object):
@@ -26,7 +29,11 @@ class EventListManager(object):
         if after is None:
             after = datetime.datetime.now()
         occ_replacer = OccurrenceReplacer(
+<<<<<<< HEAD
             Occurrence.objects.filter(event__in=self.events))
+=======
+            Occurrence.objects.filter(event__in = self.events))
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
         generators = [event._occurrences_after_generator(after) for event in self.events]
         occurrences = []
 
@@ -39,7 +46,11 @@ class EventListManager(object):
         while True:
             if len(occurrences) == 0: raise StopIteration
 
+<<<<<<< HEAD
             generator = occurrences[0][1]
+=======
+            generator=occurrences[0][1]
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
 
             try:
                 next = heapq.heapreplace(occurrences, (generator.next(), generator))[0]
@@ -76,7 +87,11 @@ class OccurrenceReplacer(object):
         """
         Return persisted occurrences which are now in the period
         """
+<<<<<<< HEAD
         return [occ for key, occ in self.lookup.items() if (occ.start < end and occ.end >= start and not occ.cancelled)]
+=======
+        return [occ for key,occ in self.lookup.items() if (occ.start < end and occ.end >= start and not occ.cancelled)]
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
 
 
 class check_event_permissions(object):
@@ -122,6 +137,7 @@ def coerce_date_dict(date_dict):
             modified = True
         except KeyError:
             break
+<<<<<<< HEAD
     date = modified and retVal or {}
     
     if date:
@@ -194,4 +210,7 @@ def serialize_occurrences(request, occurrences, user):
     rnd = loader.get_template('schedule/occurrences_json.html')
     resp = rnd.render(Context({'occurrences':occ_list}))
     return resp
+=======
+    return modified and retVal or {}
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
 

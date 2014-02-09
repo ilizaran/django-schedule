@@ -8,7 +8,11 @@
     <tr>
     {% for month in periods.year.get_months %}
         <td valign="top">
+<<<<<<< HEAD
         <a href="{% url "month_calendar" calendar.slug %}{% querystring_for_date month.start 2 %}">
+=======
+        <a href="{% url month_calendar calendar.slug %}{% querystring_for_date month.start 2 %}">
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
             {{month.name}}
         </a>
         {% month_table calendar month "small" %}</td>
@@ -29,10 +33,17 @@
     </tr>
 </table></p>
 <div class="navigation">
+<<<<<<< HEAD
   <a href="{% url "month_calendar" calendar.slug %}">
     Current Month Calendar
   </a>
   <a href="{% url "year_calendar" calendar.slug %}">
+=======
+  <a href="{% url month_calendar calendar.slug %}">
+    Current Month Calendar
+  </a>
+  <a href="{% url year_calendar calendar.slug %}">
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
     Current Year Calendar
   </a>
 </div>

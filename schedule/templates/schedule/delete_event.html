@@ -5,7 +5,11 @@
 <h1>{% trans "Delete" %}</h1>
 {% trans "Are you sure that you really want to delete it?" %}
 
+<<<<<<< HEAD
 <form action="." method="POST">{% csrf_token %}
+=======
+<form action="." method="POST">
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
     {{ object }} <br/>
     <input type="submit" value="{% trans "Delete" %}" />
     <input type="button" value="{% trans "Cancel" %}" onclick="window.location='{{next}}'"/>

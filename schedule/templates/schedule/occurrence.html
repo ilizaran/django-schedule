@@ -4,10 +4,17 @@
 
 {% block body %}
 <div class="navigation">
+<<<<<<< HEAD
   <a href="{% url "day_calendar" occurrence.event.calendar.slug %}{% querystring_for_date occurrence.start 3 %}">
     Day
   </a>
   <a href="{% url "month_calendar" occurrence.event.calendar.slug %}{% querystring_for_date occurrence.start 2 %}">
+=======
+  <a href="{% url day_calendar occurrence.event.calendar.slug %}{% querystring_for_date occurrence.start 3 %}">
+    Day
+  </a>
+  <a href="{% url month_calendar occurrence.event.calendar.slug %}{% querystring_for_date occurrence.start 2 %}">
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
     Month
   </a>
 </div>

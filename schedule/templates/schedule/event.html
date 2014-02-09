@@ -5,6 +5,7 @@
 {% block body %}
 
 <div class="navigation">
+<<<<<<< HEAD
   <a href="{% url "day_calendar" event.calendar.slug %}{% querystring_for_date event.start 3 %}">
     Day
   </a>
@@ -12,6 +13,15 @@
     Month
   </a>
   <a href="{% url "year_calendar" event.calendar.slug %}{% querystring_for_date event.start 1%}">
+=======
+  <a href="{% url day_calendar event.calendar.slug %}{% querystring_for_date event.start 3 %}">
+    Day
+  </a>
+  <a href="{% url month_calendar event.calendar.slug %}{% querystring_for_date event.start 2 %}">
+    Month
+  </a>
+  <a href="{% url year_calendar event.calendar.slug %}{% querystring_for_date event.start 1%}">
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
     Year
   </a>
 </div>
@@ -23,11 +33,19 @@
   </a>
   &nbsp;
   {% endif %}
+<<<<<<< HEAD
   <a href="{% url "edit_event" event.calendar.slug,event.id %}">
     <img border="0" src="{{ MEDIA_URL }}schedule/img/pencil.png" alt="{% trans "Change" %}"/>
   </a>
   &nbsp;
   <a href="{% url "delete_event" event.id %}">
+=======
+  <a href="{% url edit_event event.calendar.slug,event.id %}">
+    <img border="0" src="{{ MEDIA_URL }}schedule/img/pencil.png" alt="{% trans "Change" %}"/>
+  </a>
+  &nbsp;
+  <a href="{% url delete_event event.id %}">
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
     <img border="0" src="{{ MEDIA_URL }}schedule/img/delete.png" alt="{% trans "Delete" %}"/>
   </a>
 </div>

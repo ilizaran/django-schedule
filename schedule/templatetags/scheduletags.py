@@ -5,7 +5,11 @@ from django.core.urlresolvers import reverse
 from django.utils.dateformat import format
 from django.conf import settings
 from schedule.conf.settings import CHECK_PERMISSION_FUNC
+<<<<<<< HEAD
 from schedule.models import Calendar, Rule
+=======
+from schedule.models import Calendar
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
 from schedule.periods import weekday_names, weekday_abbrs,  Month
 
 register = template.Library()
@@ -82,6 +86,10 @@ def options(context, occurrence ):
     user = context['request'].user
     if CHECK_PERMISSION_FUNC(occurrence.event, user):
         context['edit_occurrence'] = occurrence.get_edit_url()
+<<<<<<< HEAD
+=======
+        print context['edit_occurrence']
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
         context['cancel_occurrence'] = occurrence.get_cancel_url()
         context['delete_event'] = reverse('delete_event', args=(occurrence.event.id,))
         context['edit_event'] = reverse('edit_event', args=(occurrence.event.calendar.slug, occurrence.event.id,))
@@ -293,6 +301,7 @@ def _cook_slots(period, increment, width, height):
 @register.simple_tag
 def hash_occurrence(occ):
     return '%s_%s' % (occ.start.strftime('%Y%m%d%H%M%S'), occ.event.id)
+<<<<<<< HEAD
 
 
 @register.simple_tag
@@ -307,3 +316,5 @@ def rule_select(name):
     for r in Rule.objects.order_by('name'):
         opts += '<option value="%s">%s</option>' % (r.id, r.name)
     return s % (name, opts)
+=======
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3

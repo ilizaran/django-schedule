@@ -9,7 +9,11 @@
 {% for week in month.get_weeks %}
     <tr>
     <td>
+<<<<<<< HEAD
         <a href="{% url "week_calendar" calendar.slug %}{% querystring_for_date week.start %}">
+=======
+        <a href="{% url week_calendar calendar.slug %}{% querystring_for_date week.start %}">
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
             {{week.start|date:"W"}}
         </a>
     </td>

@@ -24,6 +24,7 @@ class Event(models.Model):
     other models.
     '''
     start = models.DateTimeField(_("start"))
+<<<<<<< HEAD
     end = models.DateTimeField(_("end"), help_text=_("The end time must be later than the start time."))
     title = models.CharField(_("title"), max_length=255)
     description = models.TextField(_("description"), null=True, blank=True)
@@ -31,6 +32,15 @@ class Event(models.Model):
     created_on = models.DateTimeField(_("created on"), default=datetime.datetime.now)
     rule = models.ForeignKey(Rule, null=True, blank=True, verbose_name=_("rule"), help_text=_("Select '----' for a one time only event."))
     end_recurring_period = models.DateTimeField(_("end recurring period"), null=True, blank=True, help_text=_("This date is ignored for one time only events."))
+=======
+    end = models.DateTimeField(_("end"),help_text=_("The end time must be later than the start time."))
+    title = models.CharField(_("title"), max_length = 255)
+    description = models.TextField(_("description"), null = True, blank = True)
+    creator = models.ForeignKey(User, null = True, verbose_name=_("creator"))
+    created_on = models.DateTimeField(_("created on"), default = datetime.datetime.now)
+    rule = models.ForeignKey(Rule, null = True, blank = True, verbose_name=_("rule"), help_text=_("Select '----' for a one time only event."))
+    end_recurring_period = models.DateTimeField(_("end recurring period"), null = True, blank = True, help_text=_("This date is ignored for one time only events."))
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
     calendar = models.ForeignKey(Calendar, blank=True, null=True)
     objects = EventManager()
 
@@ -38,7 +48,11 @@ class Event(models.Model):
         verbose_name = _('event')
         verbose_name_plural = _('events')
         app_label = 'schedule'
+<<<<<<< HEAD
         get_latest_by = 'start'
+=======
+	get_latest_by = 'start' 
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
 
     def __unicode__(self):
         date_format = u'l, %s' % ugettext("DATE_FORMAT")
@@ -51,7 +65,11 @@ class Event(models.Model):
     def get_absolute_url(self):
         return reverse('event', args=[self.id])
 
+<<<<<<< HEAD
     def create_relation(self, obj, distinction=None):
+=======
+    def create_relation(self, obj, distinction = None):
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
         """
         Creates a EventRelation between self and obj.
         """
@@ -89,7 +107,11 @@ class Event(models.Model):
                 if p_occ.start < end and p_occ.end >= start:
                     final_occurrences.append(p_occ)
             else:
+<<<<<<< HEAD
                 final_occurrences.append(occ)
+=======
+              final_occurrences.append(occ)
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
         # then add persisted occurrences which originated outside of this period but now
         # fall within it
         final_occurrences += occ_replacer.get_additional_occurrences(start, end)
@@ -104,7 +126,11 @@ class Event(models.Model):
     def _create_occurrence(self, start, end=None):
         if end is None:
             end = start + (self.end - self.start)
+<<<<<<< HEAD
         return Occurrence(event=self, start=start, end=end, original_start=start, original_end=end)
+=======
+        return Occurrence(event=self,start=start,end=end, original_start=start, original_end=end)
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
 
     def get_occurrence(self, date):
         rule = self.get_rrule_object()
@@ -114,7 +140,11 @@ class Event(models.Model):
             next_occurrence = self.start
         if next_occurrence == date:
             try:
+<<<<<<< HEAD
                 return Occurrence.objects.get(event=self, original_start=date)
+=======
+                return Occurrence.objects.get(event = self, original_start = date)
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
             except Occurrence.DoesNotExist:
                 return self._create_occurrence(next_occurrence)
 
@@ -129,7 +159,11 @@ class Event(models.Model):
             if self.end_recurring_period and self.end_recurring_period < end:
                 end = self.end_recurring_period
             rule = self.get_rrule_object()
+<<<<<<< HEAD
             o_starts = rule.between(start - difference, end, inc=False)
+=======
+            o_starts = rule.between(start-difference, end, inc=False)
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
             for o_start in o_starts:
                 o_end = o_start + difference
                 occurrences.append(self._create_occurrence(o_start, o_end))
@@ -175,11 +209,19 @@ class Event(models.Model):
         while True:
             next = generator.next()
             yield occ_replacer.get_occurrence(next)
+<<<<<<< HEAD
 
     def next_occurrence(self):
         for o in self.occurrences_after():
             return o
 
+=======
+    
+    def next_occurrence(self):
+        for o in self.occurrences_after():
+            return o
+    
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
 
 class EventRelationManager(models.Manager):
     '''
@@ -266,14 +308,20 @@ class EventRelationManager(models.Manager):
         '''
         ct = ContentType.objects.get_for_model(type(content_object))
         if distinction:
+<<<<<<< HEAD
             dist_q = Q(eventrelation__distinction=distinction)
             cal_dist_q = Q(calendar__calendarrelation__distinction=distinction)
+=======
+            dist_q = Q(eventrelation__distinction = distinction)
+            cal_dist_q = Q(calendar__calendarrelation__distinction = distinction)
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
         else:
             dist_q = Q()
             cal_dist_q = Q()
         if inherit:
             inherit_q = Q(
                 cal_dist_q,
+<<<<<<< HEAD
                 calendar__calendarrelation__object_id=content_object.id,
                 calendar__calendarrelation__content_type=ct,
                 calendar__calendarrelation__inheritable=True,
@@ -282,6 +330,16 @@ class EventRelationManager(models.Manager):
             inherit_q = Q()
         event_q = Q(dist_q, Q(eventrelation__object_id=content_object.id), Q(eventrelation__content_type=ct))
         return Event.objects.filter(inherit_q | event_q)
+=======
+                calendar__calendarrelation__object_id = content_object.id,
+                calendar__calendarrelation__content_type = ct,
+                calendar__calendarrelation__inheritable = True,
+            )
+        else:
+            inherit_q = Q()
+        event_q = Q(dist_q, Q(eventrelation__object_id=content_object.id),Q(eventrelation__content_type=ct))
+        return Event.objects.filter(inherit_q|event_q)
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
 
     def change_distinction(self, distinction, new_distinction):
         '''
@@ -289,7 +347,11 @@ class EventRelationManager(models.Manager):
         distinction to a new one. It should only be used for managerial stuff.
         It is also expensive so it should be used sparingly.
         '''
+<<<<<<< HEAD
         for relation in self.filter(distinction=distinction):
+=======
+        for relation in self.filter(distinction = distinction):
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
             relation.distinction = new_distinction
             relation.save()
 
@@ -301,11 +363,19 @@ class EventRelationManager(models.Manager):
         ct = ContentType.objects.get_for_model(type(content_object))
         object_id = content_object.id
         er = EventRelation(
+<<<<<<< HEAD
             content_type=ct,
             object_id=object_id,
             event=event,
             distinction=distinction,
             content_object=content_object
+=======
+            content_type = ct,
+            object_id = object_id,
+            event = event,
+            distinction = distinction,
+            content_object = content_object
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
         )
         er.save()
         return er
@@ -333,7 +403,11 @@ class EventRelation(models.Model):
     content_type = models.ForeignKey(ContentType)
     object_id = models.IntegerField()
     content_object = generic.GenericForeignKey('content_type', 'object_id')
+<<<<<<< HEAD
     distinction = models.CharField(_("distinction"), max_length=20, null=True)
+=======
+    distinction = models.CharField(_("distinction"), max_length = 20, null=True)
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
 
     objects = EventRelationManager()
 

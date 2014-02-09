@@ -1,5 +1,9 @@
 from schedule.models import Calendar
+<<<<<<< HEAD
 from django.contrib.syndication.views import FeedDoesNotExist
+=======
+from django.contrib.syndication.feeds import FeedDoesNotExist
+>>>>>>> 133f476f94afcb912beb2feefcfd41dc09a3d9e3
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from schedule.feeds.atom import Feed
