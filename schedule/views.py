@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import Context, loader, RequestContext
-from django.views.generic.create_update import delete_object, delete_object
+#from django.views.generic.create_update import delete_object, delete_object
 from schedule.conf.settings import GET_EVENTS_FUNC, OCCURRENCE_CANCEL_REDIRECT
 from schedule.forms import EventBackendForm, OccurrenceBackendForm, EventForm, \
     OccurrenceForm

@@ -1,14 +1,15 @@
 from django.conf import settings
-from django.conf.urls.defaults import *
-from django.views.generic.simple import direct_to_template
+from django.views.generic import TemplateView
+from django.conf.urls.defaults import patterns, url, include
 
 from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', direct_to_template,{"template":"homepage.html"}),
+                          
+    url(r'^$', TemplateView.as_view(template_name='homepage.html')),
     (r'^schedule/', include('schedule.urls')),
-
+    
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
 )

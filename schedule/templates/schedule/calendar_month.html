@@ -11,7 +11,7 @@
   <div class="calendarname">{{ calendar.name }}</div>
   {% prevnext "month_calendar" calendar.slug periods.month "F Y"%}
   <div class="now">
-    <a href="{% url month_calendar calendar.slug %}">
+    <a href="{% url "month_calendar" calendar.slug %}">
       This month
     </a>
   </div>
